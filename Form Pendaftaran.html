@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Pendaftaran Seminar Parenting & Keluarga</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary-color: #0f2c59;
+      --accent-color: #f8af23;
+      --bg-gradient: linear-gradient(135deg, #f0f4f9 0%, #e2e8f0 100%);
+    }
+
+    body { 
+      background: var(--bg-gradient); 
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; 
+      color: #334155;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container-custom {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 12px;
+    }
+
+    .main-card {
+      border: none;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      background: #ffffff;
+      margin-bottom: 16px;
+    }
+
+    .banner-img { 
+      width: 100%; 
+      height: auto; 
+      display: block; 
+    }
+
+    /* ----------------------------------------------------
+       3 BLOK WARNA DESAIN UTAMA
+    ---------------------------------------------------- */
+    .block-card {
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .block-info-utama {
+      background-color: #f0f7ff;
+      border-left: 5px solid #0284c7;
+    }
+
+    .block-jadwal {
+      background-color: #f0fdf4;
+      border-left: 5px solid #10b981;
+    }
+
+    .block-harga {
+      background-color: #faf5ff;
+      border-left: 5px solid #8b5cf6;
+    }
+
+    .info-box-inner {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      height: 100%;
+    }
+
+    .info-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background-color: #e0e7ff;
+      color: #3730a3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .session-card-inner {
+      background: #ffffff;
+      border: 1px solid #d1fae5;
+      border-left: 4px solid #10b981;
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+
+    .table-custom {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #e9d5ff;
+      width: 100%;
+      background-color: #ffffff;
+    }
+    
+    .table-custom thead {
+      background-color: #6b21a8;
+      color: #ffffff;
+    }
+
+    .table-custom th {
+      padding: 10px;
+      font-weight: 600;
+    }
+
+    .table-custom td {
+      padding: 10px;
+      border-bottom: 1px solid #f3e8ff;
+      font-size: 0.88rem;
+    }
+
+    .row-paket-1 { background-color: #ffffff; }
+    .row-paket-2 { background-color: #faf5ff; }
+    .row-paket-3 { background-color: #fefce8; }
+    .row-paket-4 { background-color: #fff1f2; }
+    .row-paket-5 { background-color: #f0fdf4; }
+
+    .text-paket-title {
+      color: #0f172a !important;
+      font-weight: 600;
+    }
+
+    .text-date-early {
+      display: inline-block;
+      background-color: #fef08a;
+      color: #854d0e !important;
+      font-weight: 700;
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-top: 3px;
+      letter-spacing: 0.3px;
+    }
+
+    .text-price-early {
+      color: #047857 !important;
+      font-weight: 700;
+    }
+
+    .text-price-normal {
+      color: #334155 !important;
+      font-weight: 600;
+    }
+
+    .badge-soft-danger {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 6px;
+    }
+
+    /* ----------------------------------------------------
+       DESAIN KARTU PILIHAN SESI & STATE TERPILIH (SELECTED)
+    ---------------------------------------------------- */
+    .step-badge {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .session-option-card {
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      background-color: #ffffff;
+      position: relative;
+    }
+
+    .session-option-card:hover {
+      border-color: #94a3b8;
+    }
+
+    .session-option-card.selected {
+      border-color: #0284c7 !important;
+      background-color: #e0f2fe !important;
+      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.22);
+      border-width: 2.5px;
+    }
+
+    .session-option-card input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary-color);
+      margin-top: 2px;
+    }
+
+    .form-control {
+      border-radius: 10px;
+      padding: 10px 14px;
+      border: 1.5px solid #cbd5e1;
+    }
+    .form-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(15, 44, 89, 0.15);
+    }
+
+    .price-summary-badge {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border: 1.5px dashed #3b82f6;
+      border-radius: 12px;
+    }
+
+    .bank-card { 
+      background: #fffbe2; 
+      border: 1.5px dashed #f59e0b; 
+      border-radius: 12px; 
+    }
+
+    .btn-submit {
+      background-color: var(--primary-color);
+      color: #fff;
+      border-radius: 10px;
+      font-weight: 600;
+      padding: 14px;
+      width: 100%;
+      border: none;
+      transition: all 0.3s;
+      font-size: 1rem;
+    }
+    .btn-submit:hover {
+      background-color: #091e3e;
+      color: #fff;
+    }
+
+    .modal-success-icon {
+      width: 70px;
+      height: 70px;
+      background-color: #dcfce7;
+      color: #15803d;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin: 0 auto 12px auto;
+    }
+  </style>
+</head>
+<body class="py-2 py-md-4">
+
+<div class="container-custom">
+  
+  <!-- Main Informational Card -->
+  <div class="card main-card">
+    <img src="https://lh3.googleusercontent.com/d/1F9zSalHQAj5PmgshMObWDpIaSLdQLyhg" class="banner-img" alt="Banner Seminar Parenting & Keluarga">
+    
+    <div class="card-body p-3 p-md-4">
+      
+      <!-- ================= BLOK 1: INFORMASI UTAMA ================= -->
+      <div class="block-card block-info-utama">
+        <h6 class="fw-bold mb-3 text-primary d-flex align-items-center gap-2">
+          <span>📌</span> Informasi Pelaksanaan
+        </h6>
+        
+        <div class="row g-2">
+          <div class="col-12 col-sm-6">
+            <div class="info-box-inner">
+              <div class="info-icon">📅</div>
+              <div>
+                <small class="text-muted d-block fw-medium" style="font-size: 0.78rem;">Hari & Tanggal</small>
+                <strong class="text-dark" style="font-size: 0.9rem;">Ahad, 30 Agustus 2026</strong>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-12 col-sm-6">
+            <div class="info-box-inner">
+              <div class="info-icon">📍</div>
+              <div>
+                <small class="text-muted d-block fw-medium" style="font-size: 0.78rem;">Lokasi Acara</small>
+                <strong class="text-dark" style="font-size: 0.9rem;">Ballroom Hotel Aston Karimun</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6">
+            <div class="info-box-inner">
+              <div class="info-icon">👨‍👩‍👧‍👦</div>
+              <div>
+                <small class="text-muted d-block fw-medium" style="font-size: 0.78rem;">Target Peserta</small>
+                <strong class="text-dark" style="font-size: 0.9rem;">Orang Tua & Keluarga</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6">
+            <div class="info-box-inner">
+              <div class="info-icon">🎁</div>
+              <div>
+                <small class="text-muted d-block fw-medium" style="font-size: 0.78rem;">Benefit Acara</small>
+                <strong class="text-dark" style="font-size: 0.9rem;">Ilmu Praktis & Keharmonisan</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= BLOK 2: JADWAL & MATERI ================= -->
+      <div class="block-card block-jadwal">
+        <h6 class="fw-bold mb-3 text-success d-flex align-items-center gap-2">
+          <span>📖</span> Jadwal & Materi Acara
+        </h6>
+
+        <div class="session-card-inner">
+          <div class="fw-bold text-dark" style="font-size: 0.92rem;">⏰ Sesi I (Parenting) — 07.30 - 11.00 WIB</div>
+          <div class="text-muted small">💡 <em>"Mengasuh Tanpa Marah: Mengelola Emosi Orang Tua"</em></div>
+        </div>
+
+        <div class="session-card-inner mb-0" style="border-left-color: #059669;">
+          <div class="fw-bold text-dark" style="font-size: 0.92rem;">⏰ Sesi II (Keluarga) — 12.30 - 15.30 WIB</div>
+          <div class="text-muted small">💡 <em>"Menjaga Keharmonisan Pasangan sebagai Pondasi Utama Tumbuh Kembang Anak"</em></div>
+        </div>
+      </div>
+
+      <!-- ================= BLOK 3: RINCIAN HARGA (HTM) ================= -->
+      <div class="block-card block-harga mb-0">
+        <h6 class="fw-bold mb-3 d-flex align-items-center gap-2" style="color: #6b21a8;">
+          <span>🎟️</span> Rincian Harga Tiket (HTM)
+        </h6>
+
+        <div class="table-responsive">
+          <table class="table table-custom table-sm align-middle text-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-start py-2 ps-3">Sesi / Paket</th>
+                <th class="py-2">
+                  🔥 Early Bird<br>
+                  <span class="text-date-early">03 - 09 Ags</span>
+                </th>
+                <th class="py-2">Harga Normal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-paket-1">
+                <td class="text-start ps-3 text-paket-title">Sesi I (Parenting) - 1 Orang</td>
+                <td><span class="text-price-early">Rp 75.000</span></td>
+                <td><span class="text-price-normal">Rp 100.000</span></td>
+              </tr>
+              <tr class="row-paket-2">
+                <td class="text-start ps-3 text-paket-title">Sesi I (Parenting) - Couple</td>
+                <td><span class="text-price-early">Rp 100.000</span></td>
+                <td><span class="text-price-normal">Rp 150.000</span></td>
+              </tr>
+              <tr class="row-paket-3">
+                <td class="text-start ps-3 text-paket-title">Sesi II (Keluarga) - Couple</td>
+                <td><span class="text-price-early">Rp 200.000</span></td>
+                <td><span class="text-price-normal">Rp 250.000</span></td>
+              </tr>
+              <tr class="row-paket-4">
+                <td class="text-start ps-3 text-paket-title">
+                  Paket 2 Sesi (1 Orang + Couple) <span class="badge badge-soft-danger ms-1">Diskon 8% 💥</span>
+                </td>
+                <td><span class="text-price-early">Rp 253.000</span></td>
+                <td><span class="text-price-normal">Rp 322.000</span></td>
+              </tr>
+              <tr class="row-paket-5">
+                <td class="text-start ps-3 text-paket-title">
+                  Paket 2 Sesi Couple <span class="badge badge-soft-danger ms-1">Diskon 10% 💥</span>
+                </td>
+                <td><span class="text-price-early">Rp 270.000</span></td>
+                <td><span class="text-price-normal">Rp 360.000</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <small class="text-muted d-block mt-2" style="font-size: 0.78rem;">*Sesi II & Paket Sesi Pasangan berlaku khusus Suami & Istri 💑.</small>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Registration Form Card -->
+  <div class="card main-card">
+    <div class="card-body p-3 p-md-4">
+      <h5 class="fw-bold mb-3 text-dark">📝 Formulir Pendaftaran</h5>
+
+      <form id="regForm" onsubmit="event.preventDefault(); submitData();">
+        
+        <!-- STEP 1: PILIH SESI (KARTU PILIHAN / RADIO CARD) -->
+        <div class="mb-4">
+          <label class="form-label fw-bold d-flex align-items-center gap-2 mb-3">
+            <span class="step-badge">1</span> Pilih Sesi / Paket Acara
+          </label>
+
+          <!-- Opsi 1 -->
+          <div class="session-option-card d-flex align-items-start gap-3" onclick="selectSession('Sesi I (Parenting) - 1 Orang', this)">
+            <input type="radio" name="pilihanSesi" id="radio1" value="Sesi I (Parenting) - 1 Orang">
+            <div class="w-100">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <strong class="text-dark" style="font-size: 0.95rem;">👤 Sesi I (Parenting) — 1 Orang</strong>
+                <span class="badge bg-light text-dark border">Perorangan</span>
+              </div>
+              <div class="small text-secondary mb-1">Materi pengasuhan anak tanpa marah.</div>
+              <div class="fw-bold text-success small">Rp 75.000 <span class="text-muted fw-normal fs-7">(Early Bird)</span> / Rp 100.000 <span class="text-muted fw-normal fs-7">(Normal)</span></div>
+            </div>
+          </div>
+
+          <!-- Opsi 2 -->
+          <div class="session-option-card d-flex align-items-start gap-3" onclick="selectSession('Sesi I (Parenting) - Couple', this)">
+            <input type="radio" name="pilihanSesi" id="radio2" value="Sesi I (Parenting) - Couple">
+            <div class="w-100">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <strong class="text-dark" style="font-size: 0.95rem;">👩‍❤️‍👨 Sesi I (Parenting) — Couple</strong>
+                <span class="badge bg-info-subtle text-info-emphasis border">Suami + Istri</span>
+              </div>
+              <div class="small text-secondary mb-1">Materi pengasuhan khusus Pasangan Suami & Istri.</div>
+              <div class="fw-bold text-success small">Rp 100.000 <span class="text-muted fw-normal fs-7">(Early Bird)</span> / Rp 150.000 <span class="text-muted fw-normal fs-7">(Normal)</span></div>
+            </div>
+          </div>
+
+          <!-- Opsi 3 -->
+          <div class="session-option-card d-flex align-items-start gap-3" onclick="selectSession('Sesi II (Keluarga) - Wajib Suami dan Istri/Couple', this)">
+            <input type="radio" name="pilihanSesi" id="radio3" value="Sesi II (Keluarga) - Wajib Suami dan Istri/Couple">
+            <div class="w-100">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <strong class="text-dark" style="font-size: 0.95rem;">💍 Sesi II (Keluarga) — Couple</strong>
+                <span class="badge bg-warning-subtle text-warning-emphasis border">Wajib Pasangan</span>
+              </div>
+              <div class="small text-secondary mb-1">Materi keharmonisan rumah tangga.</div>
+              <div class="fw-bold text-success small">Rp 200.000 <span class="text-muted fw-normal fs-7">(Early Bird)</span> / Rp 250.000 <span class="text-muted fw-normal fs-7">(Normal)</span></div>
+            </div>
+          </div>
+
+          <!-- Opsi 4 -->
+          <div class="session-option-card d-flex align-items-start gap-3" onclick="selectSession('Paket 2 Sesi (Parenting 1 Orang dan Keluarga 2/Couple)', this)">
+            <input type="radio" name="pilihanSesi" id="radio4" value="Paket 2 Sesi (Parenting 1 Orang dan Keluarga 2/Couple)">
+            <div class="w-100">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <strong class="text-dark" style="font-size: 0.95rem;">✨ Paket 2 Sesi (1 Orang + Couple)</strong>
+                <span class="badge bg-danger text-white">Diskon 8% 💥</span>
+              </div>
+              <div class="small text-secondary mb-1">Sesi I (1 Orang) + Sesi II (Suami & Istri).</div>
+              <div class="fw-bold text-success small">Rp 253.000 <span class="text-muted fw-normal fs-7">(Early Bird)</span> / Rp 322.000 <span class="text-muted fw-normal fs-7">(Normal)</span></div>
+            </div>
+          </div>
+
+          <!-- Opsi 5 -->
+          <div class="session-option-card d-flex align-items-start gap-3" onclick="selectSession('Paket 2 Sesi Couple (Parenting dan Keluarga)', this)">
+            <input type="radio" name="pilihanSesi" id="radio5" value="Paket 2 Sesi Couple (Parenting dan Keluarga)">
+            <div class="w-100">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <strong class="text-dark" style="font-size: 0.95rem;">🌟 Paket 2 Sesi Couple (Full Sesi)</strong>
+                <span class="badge bg-danger text-white">Diskon 10% 💥</span>
+              </div>
+              <div class="small text-secondary mb-1">Sesi I & Sesi II Paket Pasangan (Suami & Istri).</div>
+              <div class="fw-bold text-success small">Rp 270.000 <span class="text-muted fw-normal fs-7">(Early Bird)</span> / Rp 360.000 <span class="text-muted fw-normal fs-7">(Normal)</span></div>
+            </div>
+          </div>
+
+          <!-- Price Summary Display -->
+          <div class="price-summary-badge p-3 mt-3 text-center" id="summaryHarga" style="display: none;">
+            <small id="periodeInfo" class="d-block fw-semibold text-primary mb-1"></small>
+            <div class="fs-6 text-dark">💰 Total Biaya: <strong id="totalHargaText" class="text-success fs-4 d-block">Rp 0</strong></div>
+          </div>
+        </div>
+
+        <!-- STEP 2: Data Peserta -->
+        <div id="sectionDataPeserta" style="display: none;">
+          
+          <label class="form-label fw-bold d-flex align-items-center gap-2 mb-2">
+            <span class="step-badge">2</span> Data Diri Peserta
+          </label>
+
+          <!-- CATATAN KHUSUS SERTIFIKAT CETAK (DIPERBAIKI) -->
+          <div class="alert border-0 mb-3 rounded-3" style="background-color: #eff6ff; border-left: 4px solid #0284c7 !important;">
+            <small class="text-primary-emphasis fw-semibold d-block">
+              📜 <strong>Catatan Penulisan Nama:</strong><br>
+              Mohon tuliskan nama lengkap beserta gelar (jika ada) <strong>sesuai KTP</strong>. Nama yang ditulis di sini akan digunakan untuk pencetakan <strong>Sertifikat</strong> masing-masing peserta.
+            </small>
+          </div>
+          
+          <div class="mb-3" id="fieldSuami">
+            <label for="namaSuami" class="form-label small fw-semibold text-secondary mb-1" id="labelSuami">👨‍💼 Nama Lengkap Suami / Ayah</label>
+            <input type="text" class="form-control" id="namaSuami" name="namaSuami" required placeholder="Masukkan nama lengkap sesuai KTP">
+          </div>
+
+          <div class="mb-3" id="fieldIstri" style="display: none;">
+            <label for="namaIstri" class="form-label small fw-semibold text-secondary mb-1">👩‍💼 Nama Lengkap Istri / Ibu</label>
+            <input type="text" class="form-control" id="namaIstri" name="namaIstri" placeholder="Masukkan nama lengkap istri sesuai KTP">
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="alamat" class="form-label small fw-semibold text-secondary mb-1">🏡 Alamat Domisili</label>
+              <input type="text" class="form-control" id="alamat" name="alamat" required placeholder="Contoh: Karimun">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="whatsapp" class="form-label small fw-semibold text-secondary mb-1">📱 No. WhatsApp</label>
+              <input type="tel" class="form-control" id="whatsapp" name="whatsapp" required placeholder="08123456789">
+            </div>
+          </div>
+
+          <!-- STEP 3: Pembayaran -->
+          <label class="form-label fw-bold d-flex align-items-center gap-2 mt-4 mb-3">
+            <span class="step-badge">3</span> Pembayaran & Bukti Transfer
+          </label>
+
+          <!-- KARTU REKENING TRANSFER PANITIA (RESPONSIF & RAPI) -->
+          <div class="bank-card p-3 mb-3">
+            <div class="d-flex align-items-center mb-2">
+              <span class="me-2">💳</span>
+              <span class="fw-bold text-dark">Rekening Transfer Panitia:</span>
+            </div>
+
+            <div class="bg-white p-3 rounded-3 border">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Bank_Syariah_Indonesia.svg" alt="BSI" style="height: 28px; width: auto; object-fit: contain;">
+                <span class="badge bg-light text-dark border">BSI</span>
+              </div>
+
+              <hr class="my-2 text-muted opacity-25">
+
+              <div class="my-2">
+                <small class="text-muted d-block" style="font-size: 0.78rem;">Nomor Rekening:</small>
+                <div class="d-flex align-items-center justify-content-between gap-2 mt-1">
+                  <span class="fw-bold text-dark font-monospace" id="norekBsi" style="font-size: 1.2rem; letter-spacing: 0.5px; white-space: nowrap;">712-7557-677</span>
+                  <button type="button" class="btn btn-outline-primary btn-sm fw-semibold rounded-pill px-3 flex-shrink-0" onclick="copyNorek(this)">
+                    📋 <span>Salin</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="mt-2 pt-2 border-top">
+                <small class="text-muted d-block" style="font-size: 0.75rem;">Atas Nama:</small>
+                <strong class="text-dark" style="font-size: 0.92rem;">Ariantoni</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="namaBank" class="form-label small fw-semibold text-secondary mb-1">🏦 Bank / Dompet Digital Pengirim</label>
+            <input type="text" class="form-control" id="namaBank" name="namaBank" required placeholder="Contoh: BCA, BSI, Mandiri, BRI, GoPay, OVO">
+          </div>
+
+          <div class="mb-3">
+            <label for="namaPengirim" class="form-label small fw-semibold text-secondary mb-1">👤 Atas Nama Pemilik Rekening</label>
+            <input type="text" class="form-control" id="namaPengirim" name="namaPengirim" required placeholder="Nama pemilik rekening asal transfer">
+          </div>
+
+          <div class="mb-4">
+            <label for="buktiTransfer" class="form-label small fw-semibold text-secondary mb-1">🖼️ Upload Bukti Transfer (Gambar/PDF)</label>
+            <input type="file" class="form-control" id="buktiTransfer" name="buktiTransfer" accept="image/*,.pdf" required>
+          </div>
+
+          <button type="submit" class="btn btn-submit shadow-sm" id="btnSubmit">
+            🚀 Kirim Pendaftaran Sekarang
+          </button>
+        </div>
+
+      </form>
+
+      <div id="alertError" class="mt-3"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- POP UP MODAL BERHASIL -->
+<div class="modal fade" id="successModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center p-3 p-md-4 rounded-4 shadow border-0">
+      <div class="modal-body p-2">
+        <div class="modal-success-icon">🎉</div>
+        <h4 class="fw-bold text-dark mb-2">Pendaftaran Berhasil! ✨</h4>
+        <p class="fs-6 text-muted mb-3">
+          Alhamdulillah 🙏, data pendaftaran atas nama <br>
+          <strong id="modalNamaPeserta" class="text-dark fs-5"></strong> <br>
+          telah kami terima dengan baik.
+        </p>
+
+        <div class="alert alert-warning border-0 text-start mb-4 rounded-3" style="background-color: #fffbe2;">
+          <small class="text-dark d-block mb-1">📲 <strong>Langkah Terakhir:</strong></small>
+          <small class="text-secondary">Silakan klik tombol di bawah ini untuk konfirmasi akhir pendaftaran ke Admin Panitia via WhatsApp. 💬</small>
+        </div>
+        
+        <div class="d-grid gap-2">
+          <a id="btnWaPanitia" href="#" target="_blank" class="btn btn-success fw-bold py-3 shadow-sm fs-6 d-flex align-items-center justify-content-center gap-2">
+            <span>💬 Konfirmasi via WhatsApp Admin</span> ➔
+          </a>
+
+          <button type="button" class="btn btn-light w-100 mt-2 text-muted fw-semibold" data-bs-dismiss="modal">
+            ❌ Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx9pXQpnYwcM3GYbiUN6d8OAOudFoEX0ciTgDMCV359UAa54zxn00mDKXwmGqF4U3otig/exec";
+  const NOMOR_WA_ADMIN = "6285265392122"; 
+
+  const HARGA = {
+    "Sesi I (Parenting) - 1 Orang": { early: 75000, normal: 100000 },
+    "Sesi I (Parenting) - Couple": { early: 100000, normal: 150000 },
+    "Sesi II (Keluarga) - Wajib Suami dan Istri/Couple": { early: 200000, normal: 250000 },
+    "Paket 2 Sesi (Parenting 1 Orang dan Keluarga 2/Couple)": { early: 253000, normal: 322000 },
+    "Paket 2 Sesi Couple (Parenting dan Keluarga)": { early: 270000, normal: 360000 }
+  };
+
+  let currentSelectedSesi = "";
+  let currentTotalHarga = 0;
+
+  // Fungsi Salin Rekening
+  function copyNorek(btn) {
+    const norekRaw = document.getElementById("norekBsi").innerText.replace(/-/g, '');
+    navigator.clipboard.writeText(norekRaw).then(() => {
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = "✅ Tersalin!";
+      btn.classList.remove("btn-outline-primary");
+      btn.classList.add("btn-success", "text-white");
+
+      setTimeout(() => {
+        btn.innerHTML = originalHTML;
+        btn.classList.remove("btn-success", "text-white");
+        btn.classList.add("btn-outline-primary");
+      }, 2000);
+    }).catch(err => {
+      console.error("Gagal menyalin: ", err);
+    });
+  }
+
+  function isEarlyBird() {
+    const today = new Date();
+    const ebStart = new Date("2026-08-03T00:00:00");
+    const ebEnd = new Date("2026-08-09T23:59:59");
+    return today >= ebStart && today <= ebEnd;
+  }
+
+  function formatRupiah(angka) {
+    return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(angka);
+  }
+
+  function selectSession(valPilihan, cardEl) {
+    document.querySelectorAll('.session-option-card').forEach(card => card.classList.remove('selected'));
+    
+    cardEl.classList.add('selected');
+    const radio = cardEl.querySelector('input[type="radio"]');
+    if(radio) radio.checked = true;
+
+    currentSelectedSesi = valPilihan;
+
+    const summaryHarga = document.getElementById("summaryHarga");
+    const periodeInfo = document.getElementById("periodeInfo");
+    const totalHargaText = document.getElementById("totalHargaText");
+    const sectionDataPeserta = document.getElementById("sectionDataPeserta");
+    const fieldIstri = document.getElementById("fieldIstri");
+    const namaIstriInput = document.getElementById("namaIstri");
+    const labelSuami = document.getElementById("labelSuami");
+
+    if (!currentSelectedSesi || !HARGA[currentSelectedSesi]) {
+      summaryHarga.style.display = "none";
+      sectionDataPeserta.style.display = "none";
+      return;
+    }
+
+    const early = isEarlyBird();
+    const dataHarga = HARGA[currentSelectedSesi];
+    currentTotalHarga = early ? dataHarga.early : dataHarga.normal;
+
+    periodeInfo.textContent = early ? "🔥 PROMO EARLY BIRD (Berlaku 03 - 09 Ags 2026)" : "🏷️ HARGA NORMAL";
+    totalHargaText.textContent = formatRupiah(currentTotalHarga);
+    summaryHarga.style.display = "block";
+    sectionDataPeserta.style.display = "block";
+
+    if (currentSelectedSesi === "Sesi I (Parenting) - 1 Orang") {
+      labelSuami.textContent = "👤 Nama Lengkap Peserta";
+      fieldIstri.style.display = "none";
+      namaIstriInput.removeAttribute("required");
+      namaIstriInput.value = "";
+    } else {
+      labelSuami.textContent = "👨‍💼 Nama Lengkap Suami / Ayah";
+      fieldIstri.style.display = "block";
+      namaIstriInput.setAttribute("required", "true");
+    }
+  }
+
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64String = reader.result.split(',')[1];
+        resolve({
+          base64: base64String,
+          type: file.type,
+          name: file.name
+        });
+      };
+      reader.onerror = error => reject(error);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function submitData() {
+    const btnSubmit = document.getElementById("btnSubmit");
+    const alertError = document.getElementById("alertError");
+    alertError.innerHTML = "";
+
+    if (!currentSelectedSesi) {
+      alertError.innerHTML = `<div class="alert alert-danger">⚠️ Silakan pilih salah satu sesi/paket terlebih dahulu.</div>`;
+      return;
+    }
+
+    const namaSuami = document.getElementById("namaSuami").value.trim();
+    const namaIstri = document.getElementById("namaIstri").value.trim();
+    const alamat = document.getElementById("alamat").value.trim();
+    const whatsapp = document.getElementById("whatsapp").value.trim();
+    const namaBank = document.getElementById("namaBank").value.trim();
+    const namaPengirim = document.getElementById("namaPengirim").value.trim();
+    const fileInput = document.getElementById("buktiTransfer").files[0];
+
+    if (!fileInput) {
+      alertError.innerHTML = `<div class="alert alert-danger">⚠️ Silakan pilih/upload bukti transfer terlebih dahulu.</div>`;
+      return;
+    }
+
+    btnSubmit.disabled = true;
+    btnSubmit.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>⏳ Mengirim Pendaftaran...`;
+
+    try {
+      const fileData = await fileToBase64(fileInput);
+
+      const payload = {
+        pilihanSesi: currentSelectedSesi,
+        totalHarga: currentTotalHarga,
+        namaSuami: namaSuami,
+        namaIstri: namaIstri || "-",
+        alamat: alamat,
+        whatsapp: whatsapp,
+        namaBank: namaBank,
+        namaPengirim: namaPengirim,
+        fileBukti: fileData
+      };
+
+      const response = await fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify(payload)
+      });
+
+      const resData = await response.json();
+
+      const namaTampil = namaIstri ? `${namaSuami} & ${namaIstri}` : namaSuami;
+      document.getElementById("modalNamaPeserta").textContent = namaTampil;
+
+      const linkBuktiDrive = (resData && resData.fileUrl) ? resData.fileUrl : "Tersimpan di Sistem";
+
+      const pesanWa = encodeURIComponent(
+        `Halo Admin Panitia 👋, saya telah mendaftar Seminar Parenting & Keluarga.\n\n` +
+        `👤 *Nama:* ${namaTampil}\n` +
+        `🎟️ *Sesi:* ${currentSelectedSesi}\n` +
+        `💰 *Total:* ${formatRupiah(currentTotalHarga)}\n` +
+        `🖼️ *Bukti Transfer:* ${linkBuktiDrive}\n\n` +
+        `Mohon verifikasi & konfirmasi pendaftaran saya. Terima kasih! 🙏✨`
+      );
+      
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      if (isAndroid) {
+        document.getElementById("btnWaPanitia").href = `intent://send?phone=${NOMOR_WA_ADMIN}&text=${pesanWa}#Intent;scheme=whatsapp;package=com.whatsapp;end`;
+      } else {
+        document.getElementById("btnWaPanitia").href = `https://api.whatsapp.com/send?phone=${NOMOR_WA_ADMIN}&text=${pesanWa}`;
+      }
+
+      const successModal = new bootstrap.Modal(document.getElementById("successModal"));
+      successModal.show();
+
+      document.getElementById("regForm").reset();
+      document.querySelectorAll('.session-option-card').forEach(card => card.classList.remove('selected'));
+      currentSelectedSesi = "";
+      document.getElementById("summaryHarga").style.display = "none";
+      document.getElementById("sectionDataPeserta").style.display = "none";
+
+    } catch (error) {
+      console.error(error);
+      alertError.innerHTML = `<div class="alert alert-danger">❌ Gagal mengirim pendaftaran. Pastikan koneksi internet stabil dan coba lagi.</div>`;
+    } finally {
+      btnSubmit.disabled = false;
+      btnSubmit.innerHTML = `🚀 Kirim Pendaftaran Sekarang`;
+    }
+  }
+</script>
+
+</body>
+</html>
