@@ -43,9 +43,6 @@
       display: block; 
     }
 
-    /* ----------------------------------------------------
-       3 BLOK WARNA DESAIN UTAMA
-    ---------------------------------------------------- */
     .block-card {
       border-radius: 14px;
       padding: 16px;
@@ -167,9 +164,6 @@
       padding: 2px 6px;
     }
 
-    /* ----------------------------------------------------
-       DESAIN KARTU PILIHAN SESI & STATE TERPILIH (SELECTED)
-    ---------------------------------------------------- */
     .step-badge {
       width: 26px;
       height: 26px;
@@ -314,10 +308,10 @@
 
           <div class="col-12 col-sm-6">
             <div class="info-box-inner">
-              <div class="info-icon">🎁</div>
+              <div class="info-icon">⏳</div>
               <div>
-                <small class="text-muted d-block fw-medium" style="font-size: 0.78rem;">Benefit Acara</small>
-                <strong class="text-dark" style="font-size: 0.9rem;">Ilmu Praktis & Keharmonisan</strong>
+                <small class="text-muted d-block fw-medium" style="font-size: 0.78rem;">Batas Pendaftaran</small>
+                <strong class="text-danger" style="font-size: 0.9rem;">27 Agustus 2026 (23.59 WIB)</strong>
               </div>
             </div>
           </div>
@@ -403,9 +397,14 @@
     <div class="card-body p-3 p-md-4">
       <h5 class="fw-bold mb-3 text-dark">📝 Formulir Pendaftaran</h5>
 
+      <!-- Alert Pendaftaran Ditutup -->
+      <div id="alertTutup" class="alert alert-danger fw-bold border-2 rounded-3 text-center mb-4" style="display: none;">
+        ⛔ MOHON MAAF, PENDAFTARAN RESMI DITUTUP SEJAK 27 AGUSTUS 2026.
+      </div>
+
       <form id="regForm" onsubmit="event.preventDefault(); submitData();">
         
-        <!-- STEP 1: PILIH SESI (KARTU PILIHAN / RADIO CARD) -->
+        <!-- STEP 1: PILIH SESI -->
         <div class="mb-4">
           <label class="form-label fw-bold d-flex align-items-center gap-2 mb-3">
             <span class="step-badge">1</span> Pilih Sesi / Paket Acara
@@ -490,7 +489,6 @@
             <span class="step-badge">2</span> Data Diri Peserta
           </label>
 
-          <!-- CATATAN KHUSUS SERTIFIKAT CETAK (DIPERBAIKI) -->
           <div class="alert border-0 mb-3 rounded-3" style="background-color: #eff6ff; border-left: 4px solid #0284c7 !important;">
             <small class="text-primary-emphasis fw-semibold d-block">
               📜 <strong>Catatan Penulisan Nama:</strong><br>
@@ -524,7 +522,6 @@
             <span class="step-badge">3</span> Pembayaran & Bukti Transfer
           </label>
 
-          <!-- KARTU REKENING TRANSFER PANITIA (RESPONSIF & RAPI) -->
           <div class="bank-card p-3 mb-3">
             <div class="d-flex align-items-center mb-2">
               <span class="me-2">💳</span>
@@ -634,7 +631,21 @@
   let currentSelectedSesi = "";
   let currentTotalHarga = 0;
 
-  // Fungsi Salin Rekening
+  // Cek apakah pendaftaran telah ditutup (27 Agustus 2026 Pukul 23:59:59 WIB)
+  function isPendaftaranTutup() {
+    const today = new Date();
+    const batasTutup = new Date("2026-08-27T23:59:59");
+    return today > batasTutup;
+  }
+
+  // Cek status saat halaman dimuat
+  window.addEventListener("DOMContentLoaded", () => {
+    if (isPendaftaranTutup()) {
+      document.getElementById("alertTutup").style.display = "block";
+      document.getElementById("regForm").style.display = "none";
+    }
+  });
+
   function copyNorek(btn) {
     const norekRaw = document.getElementById("norekBsi").innerText.replace(/-/g, '');
     navigator.clipboard.writeText(norekRaw).then(() => {
@@ -665,6 +676,11 @@
   }
 
   function selectSession(valPilihan, cardEl) {
+    if (isPendaftaranTutup()) {
+      alert("⚠️ Mohon maaf, pendaftaran telah DITUTUP sejak 27 Agustus 2026.");
+      return;
+    }
+
     document.querySelectorAll('.session-option-card').forEach(card => card.classList.remove('selected'));
     
     cardEl.classList.add('selected');
@@ -729,6 +745,11 @@
     const alertError = document.getElementById("alertError");
     alertError.innerHTML = "";
 
+    if (isPendaftaranTutup()) {
+      alertError.innerHTML = `<div class="alert alert-danger">⚠️ Mohon maaf, pendaftaran telah resmi DITUTUP pada 27 Agustus 2026.</div>`;
+      return;
+    }
+
     if (!currentSelectedSesi) {
       alertError.innerHTML = `<div class="alert alert-danger">⚠️ Silakan pilih salah satu sesi/paket terlebih dahulu.</div>`;
       return;
@@ -772,6 +793,13 @@
 
       const resData = await response.json();
 
+      if (resData.result === "error") {
+        alertError.innerHTML = `<div class="alert alert-danger">⚠️ ${resData.error}</div>`;
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = `🚀 Kirim Pendaftaran Sekarang`;
+        return;
+      }
+
       const namaTampil = namaIstri ? `${namaSuami} & ${namaIstri}` : namaSuami;
       document.getElementById("modalNamaPeserta").textContent = namaTampil;
 
@@ -798,19 +826,16 @@
 
       document.getElementById("regForm").reset();
       document.querySelectorAll('.session-option-card').forEach(card => card.classList.remove('selected'));
-      currentSelectedSesi = "";
       document.getElementById("summaryHarga").style.display = "none";
       document.getElementById("sectionDataPeserta").style.display = "none";
 
-    } catch (error) {
-      console.error(error);
-      alertError.innerHTML = `<div class="alert alert-danger">❌ Gagal mengirim pendaftaran. Pastikan koneksi internet stabil dan coba lagi.</div>`;
+    } catch (err) {
+      alertError.innerHTML = `<div class="alert alert-danger">❌ Terjadi kesalahan: ${err.toString()}</div>`;
     } finally {
       btnSubmit.disabled = false;
       btnSubmit.innerHTML = `🚀 Kirim Pendaftaran Sekarang`;
     }
   }
 </script>
-
 </body>
 </html>
