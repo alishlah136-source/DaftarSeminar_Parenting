@@ -207,6 +207,21 @@
       margin-top: 2px;
     }
 
+    .book-card {
+      border: 2px dashed #f59e0b;
+      background-color: #fffbeb;
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .book-item {
+      background: #ffffff;
+      border: 1px solid #fcd34d;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 8px;
+    }
+
     .form-control {
       border-radius: 10px;
       padding: 10px 14px;
@@ -224,9 +239,17 @@
     }
 
     .bank-card { 
-      background: #fffbe2; 
-      border: 1.5px dashed #f59e0b; 
+      background: #f8fafc; 
+      border: 1.5px solid #cbd5e1; 
       border-radius: 12px; 
+    }
+
+    .qris-img {
+      max-width: 220px;
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
     .btn-submit {
@@ -475,10 +498,26 @@
             </div>
           </div>
 
+          <!-- PRE-ORDER BUKU -->
+          <div class="book-card mt-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <strong class="text-dark" style="font-size: 0.95rem;">📚 Pre-Order (PO) Buku (Opsional)</strong>
+              <span class="badge bg-warning text-dark border">Ust. Cahyadi Takariawan & Buku Lain</span>
+            </div>
+            <p class="small text-muted mb-3" style="font-size: 0.82rem;">
+              Centang buku yang ingin Anda pesan. Buku akan diserahkan langsung saat registrasi di lokasi acara.
+            </p>
+
+            <div id="listBukuContainer">
+              <!-- Render otomatis via JS -->
+            </div>
+          </div>
+
           <!-- Price Summary Display -->
           <div class="price-summary-badge p-3 mt-3 text-center" id="summaryHarga" style="display: none;">
             <small id="periodeInfo" class="d-block fw-semibold text-primary mb-1"></small>
-            <div class="fs-6 text-dark">💰 Total Biaya: <strong id="totalHargaText" class="text-success fs-4 d-block">Rp 0</strong></div>
+            <div id="detailRincianBiaya" class="small text-muted mb-1"></div>
+            <div class="fs-6 text-dark">💰 Total Biaya Transfer: <strong id="totalHargaText" class="text-success fs-4 d-block">Rp 0</strong></div>
           </div>
         </div>
 
@@ -525,21 +564,22 @@
           <div class="bank-card p-3 mb-3">
             <div class="d-flex align-items-center mb-2">
               <span class="me-2">💳</span>
-              <span class="fw-bold text-dark">Rekening Transfer Panitia:</span>
+              <span class="fw-bold text-dark">Metode Pembayaran Panitia:</span>
             </div>
 
-            <div class="bg-white p-3 rounded-3 border">
+            <!-- OPSI REKENING BSI TERBARU -->
+            <div class="bg-white p-3 rounded-3 border mb-3">
               <div class="d-flex align-items-center justify-content-between mb-2">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Bank_Syariah_Indonesia.svg" alt="BSI" style="height: 28px; width: auto; object-fit: contain;">
-                <span class="badge bg-light text-dark border">BSI</span>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Bank_Syariah_Indonesia.svg" alt="BSI" style="height: 26px; width: auto; object-fit: contain;">
+                <span class="badge bg-light text-dark border">Transfer BSI</span>
               </div>
 
               <hr class="my-2 text-muted opacity-25">
 
               <div class="my-2">
-                <small class="text-muted d-block" style="font-size: 0.78rem;">Nomor Rekening:</small>
+                <small class="text-muted d-block" style="font-size: 0.78rem;">Nomor Rekening BSI:</small>
                 <div class="d-flex align-items-center justify-content-between gap-2 mt-1">
-                  <span class="fw-bold text-dark font-monospace" id="norekBsi" style="font-size: 1.2rem; letter-spacing: 0.5px; white-space: nowrap;">712-7557-677</span>
+                  <span class="fw-bold text-dark font-monospace" id="norekBsi" style="font-size: 1.2rem; letter-spacing: 0.5px; white-space: nowrap;">7101881948</span>
                   <button type="button" class="btn btn-outline-primary btn-sm fw-semibold rounded-pill px-3 flex-shrink-0" onclick="copyNorek(this)">
                     📋 <span>Salin</span>
                   </button>
@@ -548,18 +588,33 @@
 
               <div class="mt-2 pt-2 border-top">
                 <small class="text-muted d-block" style="font-size: 0.75rem;">Atas Nama:</small>
-                <strong class="text-dark" style="font-size: 0.92rem;">Ariantoni</strong>
+                <strong class="text-dark" style="font-size: 0.92rem;">LMI Kepulauan Riau</strong>
+              </div>
+            </div>
+
+            <!-- OPSI QRIS -->
+            <div class="bg-white p-3 rounded-3 border text-center">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <strong class="text-dark" style="font-size: 0.9rem;">📲 Scan QRIS All Payment</strong>
+                <span class="badge bg-success text-white">BCA, Mandiri, GoPay, OVO, ShopeePay, dll</span>
+              </div>
+              <hr class="my-2 text-muted opacity-25">
+              
+              <div class="py-2">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=ID2020032979532" class="qris-img mb-2" alt="QRIS LMI Kepulauan Riau">
+                <div class="fw-bold text-dark style-nmid" style="font-size: 0.88rem;">LMI KEP RIAUQRS</div>
+                <small class="text-muted font-monospace d-block" style="font-size: 0.78rem;">NMID: ID2020032979532</small>
               </div>
             </div>
           </div>
 
           <div class="mb-3">
             <label for="namaBank" class="form-label small fw-semibold text-secondary mb-1">🏦 Bank / Dompet Digital Pengirim</label>
-            <input type="text" class="form-control" id="namaBank" name="namaBank" required placeholder="Contoh: BCA, BSI, Mandiri, BRI, GoPay, OVO">
+            <input type="text" class="form-control" id="namaBank" name="namaBank" required placeholder="Contoh: BSI, BCA, QRIS Mandiri, GoPay, OVO">
           </div>
 
           <div class="mb-3">
-            <label for="namaPengirim" class="form-label small fw-semibold text-secondary mb-1">👤 Atas Nama Pemilik Rekening</label>
+            <label for="namaPengirim" class="form-label small fw-semibold text-secondary mb-1">👤 Atas Nama Pemilik Rekening / Akun</label>
             <input type="text" class="form-control" id="namaPengirim" name="namaPengirim" required placeholder="Nama pemilik rekening asal transfer">
           </div>
 
@@ -628,23 +683,59 @@
     "Paket 2 Sesi Couple (Parenting dan Keluarga)": { early: 270000, normal: 360000 }
   };
 
-  let currentSelectedSesi = "";
-  let currentTotalHarga = 0;
+  const DAFTAR_BUKU = [
+    { title: "Wonderful Wife", price: 146000 },
+    { title: "Wonderful Husband", price: 90000 },
+    { title: "Wonderful Family", price: 106000 },
+    { title: "Wonderful Journey", price: 90000 },
+    { title: "Wonderful Marriage", price: 75000 },
+    { title: "Wonderful Mertua dan Menantu", price: 125000 },
+    { title: "Guyub Rukun Ayem Tentrem", price: 99000 },
+    { title: "Alhamdulillah Terimakasih Anakku (Free E-book)", price: 100000 },
+    { title: "Sang Penggugah", price: 65000 },
+    { title: "Password Rejeki", price: 75000 },
+    { title: "Manifesto Masjid Nabi", price: 150000 },
+    { title: "Tarbiyah itu Mudah", price: 66000 }
+  ];
 
-  // Cek apakah pendaftaran telah ditutup (27 Agustus 2026 Pukul 23:59:59 WIB)
+  let currentSelectedSesi = "";
+  let baseHargaTiket = 0;
+  let totalHargaBuku = 0;
+  let currentTotalHarga = 0;
+  let selectedBookList = [];
+
   function isPendaftaranTutup() {
     const today = new Date();
     const batasTutup = new Date("2026-08-27T23:59:59");
     return today > batasTutup;
   }
 
-  // Cek status saat halaman dimuat
   window.addEventListener("DOMContentLoaded", () => {
     if (isPendaftaranTutup()) {
       document.getElementById("alertTutup").style.display = "block";
       document.getElementById("regForm").style.display = "none";
     }
+    renderBukuList();
   });
+
+  function renderBukuList() {
+    const container = document.getElementById("listBukuContainer");
+    let html = "";
+    DAFTAR_BUKU.forEach((buku, idx) => {
+      html += `
+        <div class="book-item d-flex align-items-center justify-content-between">
+          <div class="form-check m-0">
+            <input class="form-check-input chk-buku-item" type="checkbox" id="buku_${idx}" data-price="${buku.price}" data-title="${buku.title}" onchange="recalculateTotal()">
+            <label class="form-check-label fw-semibold text-dark small" for="buku_${idx}">
+              ${buku.title}
+            </label>
+          </div>
+          <span class="badge bg-light text-success border font-monospace">${formatRupiah(buku.price)}</span>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+  }
 
   function copyNorek(btn) {
     const norekRaw = document.getElementById("norekBsi").innerText.replace(/-/g, '');
@@ -659,9 +750,7 @@
         btn.classList.remove("btn-success", "text-white");
         btn.classList.add("btn-outline-primary");
       }, 2000);
-    }).catch(err => {
-      console.error("Gagal menyalin: ", err);
-    });
+    }).catch(err => console.error(err));
   }
 
   function isEarlyBird() {
@@ -689,28 +778,10 @@
 
     currentSelectedSesi = valPilihan;
 
-    const summaryHarga = document.getElementById("summaryHarga");
-    const periodeInfo = document.getElementById("periodeInfo");
-    const totalHargaText = document.getElementById("totalHargaText");
     const sectionDataPeserta = document.getElementById("sectionDataPeserta");
-    const fieldIstri = document.getElementById("fieldIstri");
     const namaIstriInput = document.getElementById("namaIstri");
+    const fieldIstri = document.getElementById("fieldIstri");
     const labelSuami = document.getElementById("labelSuami");
-
-    if (!currentSelectedSesi || !HARGA[currentSelectedSesi]) {
-      summaryHarga.style.display = "none";
-      sectionDataPeserta.style.display = "none";
-      return;
-    }
-
-    const early = isEarlyBird();
-    const dataHarga = HARGA[currentSelectedSesi];
-    currentTotalHarga = early ? dataHarga.early : dataHarga.normal;
-
-    periodeInfo.textContent = early ? "🔥 PROMO EARLY BIRD (Berlaku 03 - 09 Ags 2026)" : "🏷️ HARGA NORMAL";
-    totalHargaText.textContent = formatRupiah(currentTotalHarga);
-    summaryHarga.style.display = "block";
-    sectionDataPeserta.style.display = "block";
 
     if (currentSelectedSesi === "Sesi I (Parenting) - 1 Orang") {
       labelSuami.textContent = "👤 Nama Lengkap Peserta";
@@ -722,120 +793,117 @@
       fieldIstri.style.display = "block";
       namaIstriInput.setAttribute("required", "true");
     }
+
+    sectionDataPeserta.style.display = "block";
+    recalculateTotal();
   }
 
-  function fileToBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const base64String = reader.result.split(',')[1];
-        resolve({
-          base64: base64String,
-          type: file.type,
-          name: file.name
-        });
-      };
-      reader.onerror = error => reject(error);
-      reader.readAsDataURL(file);
+  function recalculateTotal() {
+    if (!currentSelectedSesi) return;
+
+    const isEB = isEarlyBird();
+    const pricingObj = HARGA[currentSelectedSesi];
+    baseHargaTiket = isEB ? pricingObj.early : pricingObj.normal;
+
+    selectedBookList = [];
+    totalHargaBuku = 0;
+
+    document.querySelectorAll(".chk-buku-item").forEach(chk => {
+      if (chk.checked) {
+        selectedBookList.push(chk.getAttribute("data-title"));
+        totalHargaBuku += parseInt(chk.getAttribute("data-price"));
+      }
     });
+
+    currentTotalHarga = baseHargaTiket + totalHargaBuku;
+
+    document.getElementById("summaryHarga").style.display = "block";
+    document.getElementById("periodeInfo").textContent = isEB ? "🔥 PERIODE EARLY BIRD AKTIF" : "📌 TARIF HARGA NORMAL";
+    
+    let rincianHtml = `Tiket: ${formatRupiah(baseHargaTiket)}`;
+    if (selectedBookList.length > 0) {
+      rincianHtml += ` + Buku (${selectedBookList.length} item): ${formatRupiah(totalHargaBuku)}`;
+    }
+    document.getElementById("detailRincianBiaya").innerHTML = rincianHtml;
+    document.getElementById("totalHargaText").textContent = formatRupiah(currentTotalHarga);
   }
 
-  async function submitData() {
+  function submitData() {
     const btnSubmit = document.getElementById("btnSubmit");
-    const alertError = document.getElementById("alertError");
-    alertError.innerHTML = "";
+    const fileInput = document.getElementById("buktiTransfer");
 
-    if (isPendaftaranTutup()) {
-      alertError.innerHTML = `<div class="alert alert-danger">⚠️ Mohon maaf, pendaftaran telah resmi DITUTUP pada 27 Agustus 2026.</div>`;
+    if (!fileInput.files || fileInput.files.length === 0) {
+      alert("⚠️ Silakan upload foto/file bukti transfer terlebih dahulu.");
       return;
     }
 
-    if (!currentSelectedSesi) {
-      alertError.innerHTML = `<div class="alert alert-danger">⚠️ Silakan pilih salah satu sesi/paket terlebih dahulu.</div>`;
-      return;
-    }
-
-    const namaSuami = document.getElementById("namaSuami").value.trim();
-    const namaIstri = document.getElementById("namaIstri").value.trim();
-    const alamat = document.getElementById("alamat").value.trim();
-    const whatsapp = document.getElementById("whatsapp").value.trim();
-    const namaBank = document.getElementById("namaBank").value.trim();
-    const namaPengirim = document.getElementById("namaPengirim").value.trim();
-    const fileInput = document.getElementById("buktiTransfer").files[0];
-
-    if (!fileInput) {
-      alertError.innerHTML = `<div class="alert alert-danger">⚠️ Silakan pilih/upload bukti transfer terlebih dahulu.</div>`;
-      return;
-    }
-
+    const file = fileInput.files[0];
     btnSubmit.disabled = true;
-    btnSubmit.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>⏳ Mengirim Pendaftaran...`;
+    btnSubmit.innerHTML = "⏳ Sedang Mengirim Data & Bukti Transfer...";
 
-    try {
-      const fileData = await fileToBase64(fileInput);
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const base64Data = e.target.result;
+
+      const namaSuami = document.getElementById("namaSuami").value;
+      const namaIstri = document.getElementById("namaIstri").value;
+      let namaLengkapFinal = namaSuami;
+      if (namaIstri) {
+        namaLengkapFinal += " & " + namaIstri;
+      }
 
       const payload = {
         pilihanSesi: currentSelectedSesi,
-        totalHarga: currentTotalHarga,
-        namaSuami: namaSuami,
-        namaIstri: namaIstri || "-",
-        alamat: alamat,
-        whatsapp: whatsapp,
-        namaBank: namaBank,
-        namaPengirim: namaPengirim,
-        fileBukti: fileData
+        kategoriTiket: isEarlyBird() ? "Early Bird" : "Normal",
+        namaLengkap: namaLengkapFinal,
+        alamat: document.getElementById("alamat").value,
+        whatsapp: document.getElementById("whatsapp").value,
+        namaBank: document.getElementById("namaBank").value,
+        namaPengirim: document.getElementById("namaPengirim").value,
+        poBuku: selectedBookList.length > 0 ? selectedBookList.join(", ") : "Tidak PO Buku",
+        totalBayar: currentTotalHarga,
+        fileData: base64Data,
+        fileName: file.name,
+        fileMimeType: file.type
       };
 
-      const response = await fetch(SCRIPT_URL, {
+      fetch(SCRIPT_URL, {
         method: "POST",
         body: JSON.stringify(payload)
-      });
-
-      const resData = await response.json();
-
-      if (resData.result === "error") {
-        alertError.innerHTML = `<div class="alert alert-danger">⚠️ ${resData.error}</div>`;
+      })
+      .then(res => res.json())
+      .then(response => {
         btnSubmit.disabled = false;
-        btnSubmit.innerHTML = `🚀 Kirim Pendaftaran Sekarang`;
-        return;
-      }
+        btnSubmit.innerHTML = "🚀 Kirim Pendaftaran Sekarang";
 
-      const namaTampil = namaIstri ? `${namaSuami} & ${namaIstri}` : namaSuami;
-      document.getElementById("modalNamaPeserta").textContent = namaTampil;
+        if (response.status === "success") {
+          document.getElementById("modalNamaPeserta").textContent = namaLengkapFinal;
+          
+          const textWa = "Halo Admin, saya sudah mendaftar Seminar Parenting & Keluarga.\n\n" +
+                         "*Nama:* " + namaLengkapFinal + "\n" +
+                         "*Sesi:* " + currentSelectedSesi + "\n" +
+                         "*PO Buku:* " + payload.poBuku + "\n" +
+                         "*Total Transfer:* " + formatRupiah(currentTotalHarga) + "\n" +
+                         "*Link Bukti Transfer:* " + (response.buktiTF || "-");
 
-      const linkBuktiDrive = (resData && resData.fileUrl) ? resData.fileUrl : "Tersimpan di Sistem";
+          document.getElementById("btnWaPanitia").href = "https://wa.me/" + NOMOR_WA_ADMIN + "?text=" + encodeURIComponent(textWa);
 
-      const pesanWa = encodeURIComponent(
-        `Halo Admin Panitia 👋, saya telah mendaftar Seminar Parenting & Keluarga.\n\n` +
-        `👤 *Nama:* ${namaTampil}\n` +
-        `🎟️ *Sesi:* ${currentSelectedSesi}\n` +
-        `💰 *Total:* ${formatRupiah(currentTotalHarga)}\n` +
-        `🖼️ *Bukti Transfer:* ${linkBuktiDrive}\n\n` +
-        `Mohon verifikasi & konfirmasi pendaftaran saya. Terima kasih! 🙏✨`
-      );
-      
-      const isAndroid = /Android/i.test(navigator.userAgent);
-      if (isAndroid) {
-        document.getElementById("btnWaPanitia").href = `intent://send?phone=${NOMOR_WA_ADMIN}&text=${pesanWa}#Intent;scheme=whatsapp;package=com.whatsapp;end`;
-      } else {
-        document.getElementById("btnWaPanitia").href = `https://api.whatsapp.com/send?phone=${NOMOR_WA_ADMIN}&text=${pesanWa}`;
-      }
-
-      const successModal = new bootstrap.Modal(document.getElementById("successModal"));
-      successModal.show();
-
-      document.getElementById("regForm").reset();
-      document.querySelectorAll('.session-option-card').forEach(card => card.classList.remove('selected'));
-      document.getElementById("summaryHarga").style.display = "none";
-      document.getElementById("sectionDataPeserta").style.display = "none";
-
-    } catch (err) {
-      alertError.innerHTML = `<div class="alert alert-danger">❌ Terjadi kesalahan: ${err.toString()}</div>`;
-    } finally {
-      btnSubmit.disabled = false;
-      btnSubmit.innerHTML = `🚀 Kirim Pendaftaran Sekarang`;
-    }
+          const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+          successModal.show();
+        } else {
+          alert("❌ Gagal menyimpan: " + response.message);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = "🚀 Kirim Pendaftaran Sekarang";
+        alert("⚠️ Terjadi kesalahan jaringan saat mengirim data. Pastikan koneksi stabil.");
+      });
+    };
+    reader.readAsDataURL(file);
   }
 </script>
+
 </body>
 </html>
