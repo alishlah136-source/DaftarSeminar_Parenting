@@ -601,12 +601,17 @@
               <hr class="my-2 text-muted opacity-25">
               
               <div class="py-2">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=ID2020032979532" class="qris-img mb-2" alt="QRIS LMI Kepulauan Riau">
-                <div class="fw-bold text-dark style-nmid" style="font-size: 0.88rem;">LMI KEP RIAUQRS</div>
-                <small class="text-muted font-monospace d-block" style="font-size: 0.78rem;">NMID: ID2020032979532</small>
-              </div>
-            </div>
-          </div>
+  <!-- Tambahkan id="qrisImage" pada tag img di bawah ini -->
+  <img id="qrisImage" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=ID2020032979532" class="qris-img mb-2" alt="QRIS LMI Kepulauan">
+
+  <div class="fw-bold text-dark style-nmid" style="font-size: 0.88rem;">LMI KEP RIAUQRS</div>
+  <small class="text-muted font-monospace d-block" style="font-size: 0.78rem; mb-2">NMID: ID2020032979532</small>
+
+  <!-- TAMBAHKAN TOMBOL DOWNLOAD DI SINI -->
+  <a id="btnDownloadQris" href="#" class="btn btn-sm btn-outline-primary fw-semibold w-100 mt-2" download="QRIS-Seminar.png" onclick="downloadQris(event)">
+    <i class="fa-solid fa-download me-1"></i> Download Gambar QRIS
+  </a>
+</div>
 
           <div class="mb-3">
             <label for="namaBank" class="form-label small fw-semibold text-secondary mb-1">🏦 Bank / Dompet Digital Pengirim</label>
@@ -684,19 +689,19 @@
   };
 
   const DAFTAR_BUKU = [
-    { title: "Wonderful Wife", price: 146000 },
-    { title: "Wonderful Husband", price: 90000 },
-    { title: "Wonderful Family", price: 106000 },
-    { title: "Wonderful Journey", price: 90000 },
-    { title: "Wonderful Marriage", price: 75000 },
-    { title: "Wonderful Mertua dan Menantu", price: 125000 },
-    { title: "Guyub Rukun Ayem Tentrem", price: 99000 },
-    { title: "Alhamdulillah Terimakasih Anakku (Free E-book)", price: 100000 },
-    { title: "Sang Penggugah", price: 65000 },
-    { title: "Password Rejeki", price: 75000 },
-    { title: "Manifesto Masjid Nabi", price: 150000 },
-    { title: "Tarbiyah itu Mudah", price: 66000 }
-  ];
+  { title: "Wonderful Wife", price: 146000, img: "https://lh3.googleusercontent.com/d/1IbYZfHBvTLyXiynsNasTJ5aeGhKfv8VB" },
+  { title: "Wonderful Husband", price: 90000, img: "https://lh3.googleusercontent.com/d/1_GjBHxR-SOLYtBjccW6JiVaHyrtOAEBF" },
+  { title: "Wonderful Family", price: 106000, img: "https://lh3.googleusercontent.com/d/1Zf6VWTlH20yKAoxyGF6HxIyMjA6KQsfu" },
+  { title: "Wonderful Journey", price: 90000, img: "https://lh3.googleusercontent.com/d/1jeLhBEQmztBqtBuFEdOmHeH_5TOHQ318" },
+  { title: "Wonderful Marriage", price: 75000, img: "https://lh3.googleusercontent.com/d/17HCv1i92c4yQ5PqAwUW_y3xWmvpqwxzz" },
+  { title: "Wonderful Mertua dan Menantu", price: 125000, img: "https://lh3.googleusercontent.com/d/1CTkn1-BiXkRAlBJSFcSEA1tdjXIRtYck" },
+  { title: "Guyub Rukun Ayem Tentrem", price: 99000, img: "https://lh3.googleusercontent.com/d/1Sk6HjAIlYgCt3ShNKQkr4IHwteuFPHe8" },
+  { title: "Alhamdulillah Terimakasih Anakku (Free E-book)", price: 100000, img: "https://lh3.googleusercontent.com/d/1UlkhbuuqmB1oUDT-F3I-_bk9mcrt-piD" },
+  { title: "Sang Penggugah", price: 65000, img: "https://lh3.googleusercontent.com/d/1xxTcxLNOJHOBJjx2uXYbpyzP7_msrrXJ" },
+  { title: "Password Rejeki", price: 75000, img: "LINK_FOTO_PASSWORD_REJEKI" },
+  { title: "Manifesto Masjid Nabi", price: 150000, img: "https://lh3.googleusercontent.com/d/19ftQM3EvpkBBIgXWblISn74PN3fFd4bT" },
+  { title: "Tarbiyah itu Mudah", price: 66000, img: "LINK_FOTO_TARBIYAH" }
+];
 
   let currentSelectedSesi = "";
   let baseHargaTiket = 0;
@@ -718,24 +723,30 @@
     renderBukuList();
   });
 
-  function renderBukuList() {
-    const container = document.getElementById("listBukuContainer");
-    let html = "";
-    DAFTAR_BUKU.forEach((buku, idx) => {
-      html += `
-        <div class="book-item d-flex align-items-center justify-content-between">
-          <div class="form-check m-0">
-            <input class="form-check-input chk-buku-item" type="checkbox" id="buku_${idx}" data-price="${buku.price}" data-title="${buku.title}" onchange="recalculateTotal()">
-            <label class="form-check-label fw-semibold text-dark small" for="buku_${idx}">
-              ${buku.title}
-            </label>
-          </div>
-          <span class="badge bg-light text-success border font-monospace">${formatRupiah(buku.price)}</span>
+ function renderBukuList() {
+  const container = document.getElementById("listBukuContainer");
+  if (!container) return;
+  
+  let html = "";
+  DAFTAR_BUKU.forEach((buku, idx) => {
+    html += `
+      <div class="book-item d-flex align-items-center justify-content-between mb-2 p-2 border rounded bg-white">
+        <div class="form-check m-0 d-flex align-items-center flex-grow-1">
+          <input class="form-check-input chk-buku-item me-2" type="checkbox" id="buku_${idx}" data-price="${buku.price}" data-title="${buku.title}" onchange="recalculateTotal()">
+          
+          <!-- PASTIKAN ADA onclick DAN cursor: pointer -->
+          <img src="${buku.img || 'https://via.placeholder.com/35x50?text=Cover'}" alt="${buku.title}" class="rounded me-2 shadow-sm" style="width: 35px; height: 50px; object-fit: cover; cursor: pointer;" onclick="showLargeImage('${buku.img || ''}', '${buku.title}')">
+          
+          <label class="form-check-label fw-semibold text-dark small" for="buku_${idx}">
+            ${buku.title}
+          </label>
         </div>
-      `;
-    });
-    container.innerHTML = html;
-  }
+        <span class="badge bg-light text-success border font-monospace">${formatRupiah(buku.price)}</span>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
 
   function copyNorek(btn) {
     const norekRaw = document.getElementById("norekBsi").innerText.replace(/-/g, '');
@@ -903,7 +914,50 @@
     };
     reader.readAsDataURL(file);
   }
+function downloadQris(e) {
+  e.preventDefault();
+  const imgElement = document.getElementById('qrisImage');
+  const imgUrl = imgElement.src;
+
+  fetch(imgUrl)
+    .then(response => response.blob())
+    .then(blob => {
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = "QRIS-LMI-Seminar.png";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(blobUrl);
+    })
+    .catch(err => {
+      window.open(imgUrl, '_blank');
+    });
+  }
+
+  // FUNGSI ZOOM GAMBAR BUKU DITAMBAHKAN DI SINI
+  function showLargeImage(imgUrl, title) {
+    if (!imgUrl) return;
+    const modalImg = document.getElementById('modalImageSrc');
+    modalImg.src = imgUrl;
+    
+    const imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
+    imageModal.show();
+  }
 </script>
+
+<!-- HTML MODAL DILETAKKAN DI SINI (SEBELUM </body>) -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content text-center p-2">
+      <div class="modal-body p-0">
+        <img id="modalImageSrc" src="" alt="Cover Buku" class="img-fluid rounded shadow" style="max-height: 400px; width: auto;">
+      </div>
+      <button type="button" class="btn btn-secondary btn-sm mt-3" data-bs-dismiss="modal">Tutup</button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
