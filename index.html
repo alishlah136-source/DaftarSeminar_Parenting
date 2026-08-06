@@ -864,19 +864,23 @@
       }
 
       const payload = {
-        pilihanSesi: currentSelectedSesi,
-        kategoriTiket: isEarlyBird() ? "Early Bird" : "Normal",
-        namaLengkap: namaLengkapFinal,
-        alamat: document.getElementById("alamat").value,
-        whatsapp: document.getElementById("whatsapp").value,
-        namaBank: document.getElementById("namaBank").value,
-        namaPengirim: document.getElementById("namaPengirim").value,
-        poBuku: selectedBookList.length > 0 ? selectedBookList.join(", ") : "Tidak PO Buku",
-        totalBayar: currentTotalHarga,
-        fileData: base64Data,
-        fileName: file.name,
-        fileMimeType: file.type
-      };
+    pilihanSesi: currentSelectedSesi,
+    kategoriTiket: isEarlyBird() ? "Early Bird" : "Normal",
+    namaSuami: namaSuami,
+    namaIstri: namaIstri || "-",
+    alamat: document.getElementById("alamat").value,
+    whatsapp: document.getElementById("whatsapp").value,
+    namaBank: document.getElementById("namaBank").value,
+    namaPengirim: document.getElementById("namaPengirim").value,
+    
+    // Ganti dengan variabel yang benar sesuai kode Anda:
+    totalBayar: currentTotalHarga, 
+    
+    kodeKupon: document.getElementById("kodeKupon") ? document.getElementById("kodeKupon").value : "",
+    fileData: base64Data,
+    fileName: file.name,
+    fileMimeType: file.type
+};
 
       fetch(SCRIPT_URL, {
         method: "POST",
